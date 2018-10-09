@@ -25,8 +25,8 @@ namespace Middleware_Run
         {
             // Instantiate the NotifyIcon object.
             notify_icon = new NotifyIcon();
-            int x = middleware_.init_middleware_async().Result;
-            x = middleware_.init_active_core_async().Result;
+            int x = middleware_.async_init_middleware().Result;
+            x = middleware_.async_init_active_core().Result;
         }
 
         /// <summary>
@@ -49,9 +49,9 @@ namespace Middleware_Run
         /// </summary>
         public void Dispose()
         {
-            middleware_.Dispose();
             // When the application closes, this will remove the icon from the system tray immediately.
             notify_icon.Dispose();
+            middleware_.Dispose();
         }
 
         /// <summary>
@@ -65,14 +65,14 @@ namespace Middleware_Run
             if (e.Button == MouseButtons.Left)
             {
                 DialogResult rest = MessageBox.Show(
-                    "Shutdown all robots immediately?",
+                    "Shutdown the current robot immediately?",
                     "Emergency stop",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Warning
                     );
                 if (rest == DialogResult.Yes)
                 {
-                    int x = middleware_.Servo_off_async().Result;
+                    int x = middleware_.async_servo_off().Result;
                 }
             }
         }
